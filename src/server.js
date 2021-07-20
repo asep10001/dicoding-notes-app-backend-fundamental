@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 // mengimpor dotenv dan menjalankan konfigurasinya
 // eslint-disable-next-line import/no-unresolved
 require('dotenv').config();
@@ -17,6 +18,11 @@ const authentications = require('./api/authentications');
 const AuthenticationsService = require('./services/postgres/AuthenticationsService');
 const TokenManager = require('./tokenize/TokenManager');
 const AuthenticationsValidator = require('./validator/authentications');
+
+// Exports
+const _exports = require('./api/exports');
+const ProducerService = require('./services/rabbitMq/ProducerService');
+const ExportsValidator = require('./validator/export');
 
 // collaborations
 const collaborations = require('./api/collaborations');
@@ -93,6 +99,13 @@ const init = async () => {
       collaborationsService,
       notesService,
       validator: CollaborationsValidator,
+    },
+  },
+  {
+    plugin: _exports,
+    options: {
+      service: ProducerService,
+      validator: ExportsValidator,
     },
   }]);
 
